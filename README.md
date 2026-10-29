@@ -53,7 +53,7 @@
 
 বোর্ড-স্টাইল MCQ পেপার — সেট-কোড, সময়, পূর্ণমানসহ আসল পরীক্ষার ফরম্যাট, শেষে উত্তরমালা ও ব্যাখ্যা।
 
-<img src="demos/01-board-mcq/board-mcq-preview-1.svg" width="49%"> <img src="demos/01-board-mcq/board-mcq-preview-2.png" width="49%">
+<img src="demos/01-board-mcq/board-mcq-preview-1.svg" width="49%"> <img src="demos/01-board-mcq/board-mcq-preview-2.svg" width="49%">
 
 📄 [PDF](demos/01-board-mcq/board-mcq.pdf) · 💻 [সোর্স .tex](demos/01-board-mcq/board-mcq.tex)
 
@@ -61,7 +61,7 @@
 
 উদ্দীপকসহ সৃজনশীল প্রশ্ন — জ্ঞান/অনুধাবন/প্রয়োগ/উচ্চতর দক্ষতার ধাপ মেনে, বোর্ডের আসল কাঠামোয়।
 
-<img src="demos/02-board-cq/board-cq-preview-1.png" width="49%"> <img src="demos/02-board-cq/board-cq-preview-2.png" width="49%">
+<img src="demos/02-board-cq/board-cq-preview-1.svg" width="49%"> <img src="demos/02-board-cq/board-cq-preview-2.svg" width="49%">
 
 📄 [PDF](demos/02-board-cq/board-cq.pdf) · 💻 [সোর্স .tex](demos/02-board-cq/board-cq.tex)
 
@@ -69,7 +69,7 @@
 
 MCQ + CQ একসাথে পূর্ণাঙ্গ মডেল টেস্ট — কলেজ/কোচিংয়ের পরীক্ষার হুবহু ফরম্যাটে।
 
-<img src="demos/03-model-test/model-test-preview-1.png" width="49%"> <img src="demos/03-model-test/model-test-preview-2.png" width="49%">
+<img src="demos/03-model-test/model-test-preview-1.svg" width="49%"> <img src="demos/03-model-test/model-test-preview-2.svg" width="49%">
 
 📄 [PDF](demos/03-model-test/model-test.pdf) · 💻 [সোর্স .tex](demos/03-model-test/model-test.tex)
 
@@ -78,7 +78,7 @@ MCQ + CQ একসাথে পূর্ণাঙ্গ মডেল টেস�
 লেকচারের ট্রান্সক্রিপ্ট + স্লাইড থেকে বই-স্টাইল নোট। প্রতিটা কনসেপ্ট আর গণিতের পাশে **ছোট QR** —
 স্ক্যান করলেই YouTube ভিডিওর ঠিক সেই টাইমস্ট্যাম্পে (`&noapp=1`, সরাসরি ব্রাউজারে খোলে)।
 
-<img src="demos/04-note-qr/note-qr-preview-1.png" width="49%"> <img src="demos/04-note-qr/note-qr-preview-2.png" width="49%">
+<img src="demos/04-note-qr/note-qr-preview-1.svg" width="49%"> <img src="demos/04-note-qr/note-qr-preview-2.svg" width="49%">
 
 📄 [PDF](demos/04-note-qr/note-qr.pdf) · 💻 [সোর্স .tex](demos/04-note-qr/note-qr.tex) · 📥 [ইনপুট (ট্রান্সক্রিপ্ট/স্লাইড)](demos/04-note-qr/input/)
 
@@ -86,7 +86,7 @@ MCQ + CQ একসাথে পূর্ণাঙ্গ মডেল টেস�
 
 একই বই-স্টাইল নোট, QR ছাড়া — প্রিন্ট বা অফলাইন পড়ার জন্য পরিষ্কার সংস্করণ।
 
-<img src="demos/05-note-noqr/note-noqr-preview-1.png" width="49%"> <img src="demos/05-note-noqr/note-noqr-preview-2.png" width="49%">
+<img src="demos/05-note-noqr/note-noqr-preview-1.svg" width="49%"> <img src="demos/05-note-noqr/note-noqr-preview-2.svg" width="49%">
 
 📄 [PDF](demos/05-note-noqr/note-noqr.pdf) · 💻 [সোর্স .tex](demos/05-note-noqr/note-noqr.tex)
 
@@ -94,7 +94,7 @@ MCQ + CQ একসাথে পূর্ণাঙ্গ মডেল টেস�
 
 দুই-কলাম প্র্যাকটিস শিট — প্রশ্নের পাশে সংক্ষিপ্ত উত্তর, বিস্তারিত সমাধান শেষে।
 
-<img src="demos/06-practice-sheet/practice-sheet-preview-1.png" width="49%"> <img src="demos/06-practice-sheet/practice-sheet-preview-2.png" width="49%">
+<img src="demos/06-practice-sheet/practice-sheet-preview-1.svg" width="49%"> <img src="demos/06-practice-sheet/practice-sheet-preview-2.svg" width="49%">
 
 📄 [PDF](demos/06-practice-sheet/practice-sheet.pdf) · 💻 [সোর্স .tex](demos/06-practice-sheet/practice-sheet.tex)
 
@@ -102,7 +102,7 @@ MCQ + CQ একসাথে পূর্ণাঙ্গ মডেল টেস�
 
 ইঞ্জিনিয়ারিং ভর্তি-স্টাইলের রিটেন পেপার — উত্তর লেখার জায়গাসহ, দ্বিভাষিক (বাংলা + English) প্রশ্ন।
 
-<img src="demos/07-buet-written/buet-written-preview-1.png" width="49%"> <img src="demos/07-buet-written/buet-written-preview-2.png" width="49%">
+<img src="demos/07-buet-written/buet-written-preview-1.svg" width="49%"> <img src="demos/07-buet-written/buet-written-preview-2.svg" width="49%">
 
 📄 [PDF](demos/07-buet-written/buet-written.pdf) · 💻 [সোর্স .tex](demos/07-buet-written/buet-written.tex)
 
@@ -110,7 +110,7 @@ MCQ + CQ একসাথে পূর্ণাঙ্গ মডেল টেস�
 
 16:9 কালো-বোর্ড স্লাইড — ক্লাসে পড়ানোর জন্য বড় ফন্ট, পরিষ্কার ডায়াগ্রাম, এক স্লাইডে এক প্রশ্ন।
 
-<img src="demos/08-slides/mcq-slides-preview-1.png" width="49%"> <img src="demos/08-slides/cq-slides-preview-1.png" width="49%">
+<img src="demos/08-slides/mcq-slides-preview-1.svg" width="49%"> <img src="demos/08-slides/cq-slides-preview-1.svg" width="49%">
 
 📄 [MCQ স্লাইড PDF](demos/08-slides/mcq-slides.pdf) · [CQ স্লাইড PDF](demos/08-slides/cq-slides.pdf) · 💻 [সোর্স](demos/08-slides/)
 
@@ -118,7 +118,9 @@ MCQ + CQ একসাথে পূর্ণাঙ্গ মডেল টেস�
 
 বাংলা ক্যাপশনসহ Manim এক্সপ্লেইনার — ভেক্টরের লব্ধি (সামান্তরিক সূত্র), 1080p।
 
-<img src="demos/09-manim/poster.png" width="70%">
+<a href="demos/09-manim/vector_resultant_1080p.mp4"><img src="demos/09-manim/manim-preview-animated.svg" width="70%"></a>
+
+🎞️ *উপরে লাইভ প্রিভিউ চলছে — পুরো ৩৯ সেকেন্ডের ভিডিওর টাইমল্যাপস। ছবিতে ক্লিক করলেই পুরো ভিডিও।*
 
 ▶️ **[ভিডিও দেখুন — vector_resultant_1080p.mp4](demos/09-manim/vector_resultant_1080p.mp4)** · 💻 [সোর্স .py](demos/09-manim/vector_resultant.py)
 
@@ -126,7 +128,7 @@ MCQ + CQ একসাথে পূর্ণাঙ্গ মডেল টেস�
 
 ছবি বা হাতে-লেখা প্রশ্নের ছবি দিলে OCR + ডায়াগ্রাম রিবিল্ড করে প্রিন্ট-রেডি পেপার, সাথে যাচাই-তালিকা।
 
-<img src="demos/10-photo-to-print/photo-to-print-preview-1.png" width="49%"> <img src="demos/10-photo-to-print/photo-to-print-preview-2.png" width="49%">
+<img src="demos/10-photo-to-print/photo-to-print-preview-1.svg" width="49%"> <img src="demos/10-photo-to-print/photo-to-print-preview-2.svg" width="49%">
 
 📄 [PDF](demos/10-photo-to-print/photo-to-print.pdf) · 💻 [সোর্স .tex](demos/10-photo-to-print/photo-to-print.tex) · ✅ [যাচাই তালিকা](demos/10-photo-to-print/verify.md)
 
@@ -134,7 +136,7 @@ MCQ + CQ একসাথে পূর্ণাঙ্গ মডেল টেস�
 
 YouTube থাম্বনেলের স্টাইল-সিস্টেম — রেডি প্রম্পট আর লেআউট গাইড (ইমেজ মডেলের জন্য)।
 
-<img src="demos/11-thumbnail/layout-1-one-shot.png" width="49%"> <img src="demos/11-thumbnail/layout-2-exam-alert.png" width="49%">
+<img src="demos/11-thumbnail/layout-1-one-shot.svg" width="49%"> <img src="demos/11-thumbnail/layout-2-exam-alert.svg" width="49%">
 
 📝 [থাম্বনেল প্রম্পট প্যাক](demos/11-thumbnail/thumbnail-prompts.md)
 
