@@ -7,8 +7,8 @@
 
 ![XeLaTeX](https://img.shields.io/badge/PDF-XeLaTeX-blue)
 ![Manim](https://img.shields.io/badge/Video-Manim-orange)
-![Language](https://img.shields.io/badge/Language-বাংলা-green)
-![Level](https://img.shields.io/badge/Level-SSC%20%7C%20HSC%20%7C%20Admission-purple)
+![Language](https://img.shields.io/badge/Language-Bangla-green)
+![Level](https://img.shields.io/badge/Level-All%20Classes%20%281%20to%20Admission%29-purple)
 
 ---
 
