@@ -1,0 +1,26 @@
+% CQ slides — stimulus/diagram/table + part in the RIGHT panel, left side empty for live solving
+\documentclass{article}
+\usepackage{edtech-slides}\makeatletter
+\slidesetup{logo=logo-placeholder-white.png, footer={আদর্শ গ্যাস · সৃজনশীল প্রশ্ন}}
+\begin{document}
+\cqslide[tag=বোর্ড স্টাইল]{%
+একটি গ্যাসের \SI{0}{\degreeCelsius} তাপমাত্রায় বিভিন্ন অবস্থায় চাপ ও আয়তন নিম্নরূপ:\par\medskip
+{\renewcommand\arraystretch{1.35}\setlength\arrayrulewidth{1pt}%
+\begin{tabular}{|c|c|c|c|c|}\hline
+ চাপ (atm) & 0.35 & 0.50 & 0.65 & 0.85\\\hline
+ আয়তন (L) & 3.80 & 2.66 & 2.05 & 1.56\\\hline
+\end{tabular}}
+\slidepart{গ}{উদ্দীপকে উল্লিখিত গ্যাসটি গ্যাসের কোন সূত্রকে সমর্থন করবে? গাণিতিক যুক্তিসহ বিশ্লেষণ কর।}}
+\cqslide[tag=বোর্ড স্টাইল]{%
+চিত্রে \SI{5}{kg} ভরের একটি বস্তুকে \SI{30}{\degree} আনত ঘর্ষণহীন তলে দড়ির সাহায্যে টেনে তোলা হচ্ছে।\par\medskip
+\begin{tikzpicture}[scale=1.25,line width=1.1pt]
+ \draw(0,0)--(5.2,0)--(5.2,3)--cycle;
+ \begin{scope}[shift={(2.6,1.5)},rotate=30]
+   \draw(-0.5,0) rectangle (0.5,0.7); \node[font=\sl@font{16}] at (0,0.35){\SI{5}{kg}};
+   \draw[-{Latex[length=3mm]},color=etyellow](0.5,0.35)--(2.0,0.35) node[above,font=\sl@font{18}]{$T=\SI{40}{N}$};
+ \end{scope}
+ \draw (0.9,0) arc (0:30:0.9); \node[font=\sl@font{16}] at (1.45,0.3){\SI{30}{\degree}};
+\end{tikzpicture}
+\slidepart{গ}{বস্তুটির ত্বরণ নির্ণয় কর।}
+\slidepart{ঘ}{দড়ির টান অর্ধেক করা হলে বস্তুটি উপরে উঠবে নাকি নিচে নামবে? বিশ্লেষণ কর।}}
+\end{document}

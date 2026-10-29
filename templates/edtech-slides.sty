@@ -1,0 +1,77 @@
+%% ======================================================================
+%%  edtech-slides.sty — 16:9 teaching slides (XeLaTeX)
+%%  MCQ: question on top, 4 options stacked on the RIGHT, left side empty for live solving
+%%  CQ : stimulus + diagram/table + parts in the RIGHT panel, left side empty
+%%  Default theme = black board.  Change with \slidesetup{bg=..., fg=..., ...}
+%% ======================================================================
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{edtech-slides}[2026/10/29 v1.0]
+\RequirePackage{edtech}
+\geometry{paperwidth=320mm,paperheight=180mm,margin=0mm}
+\pagestyle{empty}
+
+\pgfkeys{/sl/.is family,/sl,
+  bg/.store in=\sl@bg,         bg=black,
+  fg/.store in=\sl@fg,         fg=white,
+  accent/.store in=\sl@acc,    accent=etyellow,
+  optbg/.store in=\sl@optbg,   optbg=white!94!black,
+  optfg/.store in=\sl@optfg,   optfg=black,
+  logo/.store in=\sl@logo,     logo={},
+  logoright/.store in=\sl@logor, logoright={},
+  footer/.store in=\sl@footer, footer={},
+  labels/.store in=\sl@labels, labels={A,B,C,D},
+  qsize/.store in=\sl@qsize,   qsize=27,
+  optsize/.store in=\sl@osize, optsize=25,
+  cqsize/.store in=\sl@cqsize, cqsize=23,
+  tag/.store in=\sl@tag,       tag={},
+}
+\newcommand\slidesetup[1]{\pgfkeys{/sl,#1}}
+\newcommand\sl@font[1]{\fontsize{#1}{\the\numexpr#1*13/10\relax}\selectfont}
+
+%% common frame: background, logos, footer, slide number
+\newcommand\sl@frame{%
+  \pagecolor{\sl@bg}%
+  \begin{tikzpicture}[remember picture,overlay]
+    \ifx\sl@logo\@empty\else
+      \node[anchor=north west,inner sep=0] at ([xshift=9mm,yshift=-7mm]current page.north west){\includegraphics[height=13mm]{\sl@logo}};\fi
+    \ifx\sl@logor\@empty\else
+      \node[anchor=north east,inner sep=0] at ([xshift=-9mm,yshift=-7mm]current page.north east){\includegraphics[height=13mm]{\sl@logor}};\fi
+    \ifx\sl@footer\@empty\else
+      \node[anchor=south west,text=\sl@fg!55,font=\headfont\sl@font{14}] at ([xshift=9mm,yshift=5mm]current page.south west){\sl@footer};\fi
+    \node[anchor=south east,text=\sl@fg!55,font=\latinsans\sl@font{13}] at ([xshift=-9mm,yshift=5mm]current page.south east){\thepage};
+  \end{tikzpicture}}
+
+\newsavebox\sl@box
+%% \mcqslide[tag=ঢা. বো. ১৯]{21}{question}{A}{B}{C}{D}
+\NewDocumentCommand\mcqslide{O{} m +m m m m m}{\begingroup\pgfkeys{/sl,#1}%
+  \sbox\sl@box{\begin{minipage}[t]{292mm}\raggedright\color{\sl@fg}\headfont\bfseries\sl@font{\sl@qsize}{\color{\sl@acc}#2.}\ #3\end{minipage}}%
+  \null\sl@frame
+  \foreach \l [count=\i] in \sl@labels {\expandafter\xdef\csname sl@lab\i\endcsname{\l}}%
+  \begin{tikzpicture}[remember picture,overlay,every node/.style={inner sep=0pt}]
+    \node[anchor=north west] (Q) at ([xshift=14mm,yshift=-27mm]current page.north west){\usebox\sl@box};
+    \node[anchor=north east,text=\sl@fg,font=\headfont\bfseries\sl@font{22}] (T)
+      at ([xshift=-14mm,yshift=-7mm]Q.south -| current page.east){\ifx\sl@tag\@empty\strut\else[\sl@tag]\fi};
+    \foreach \t [count=\i] in {{#4},{#5},{#6},{#7}}{
+      \node[anchor=north east,fill=\sl@optbg,text=\sl@optfg,rounded corners=2.2mm,
+            minimum height=16mm,text width=100mm,inner xsep=5mm,inner ysep=2mm,align=left,
+            font=\headfont\sl@font{\sl@osize}] at ([yshift=-8mm-(\i-1)*20.5mm]T.south east)
+            {\csname sl@lab\i\endcsname.\ \t};}
+  \end{tikzpicture}\newpage\endgroup}
+
+%% \cqslide[tag=কু. বো. ২০২২]{stimulus + \slidepart{গ}{...} ...}   (content in the right panel)
+\NewDocumentCommand\cqslide{O{} +m}{\begingroup\pgfkeys{/sl,#1}%
+  % build the panel OUTSIDE the overlay picture so inner tikz/circuitikz diagrams do not inherit node options
+  \sbox\sl@box{\begin{minipage}[t]{150mm}\raggedright\color{\sl@fg}\arrayrulecolor{\sl@fg}\headfont\sl@font{\sl@cqsize}%
+      \ifx\sl@tag\@empty\else{\color{\sl@acc}\bfseries[\sl@tag]}\par\smallskip\fi #2\end{minipage}}%
+  \null\sl@frame
+  \begin{tikzpicture}[remember picture,overlay]
+    \node[anchor=north west,inner sep=0pt] at ([xshift=158mm,yshift=-26mm]current page.north west){\usebox\sl@box};
+  \end{tikzpicture}\newpage\endgroup}
+\newcommand\slidepart[2]{\par\medskip\noindent\hangindent=1.5em\hangafter=1\makebox[1.5em][l]{\color{\sl@acc}\bfseries #1.}#2\par}
+%% plain title slide
+\newcommand\titleslide[2]{\null\sl@frame
+  \begin{tikzpicture}[remember picture,overlay]
+    \node[text=\sl@fg,font=\headfont\bfseries\sl@font{54},align=center] at ([yshift=10mm]current page.center){#1};
+    \node[text=\sl@acc,font=\headfont\sl@font{28},align=center] at ([yshift=-14mm]current page.center){#2};
+  \end{tikzpicture}\newpage}
+\endinput

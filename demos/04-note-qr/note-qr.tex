@@ -1,0 +1,164 @@
+% Interactive note WITH QR (YouTube timestamp links, noapp=1) — compile: scripts/build.sh note-qr.tex
+% Source: input/transcript.txt + input/slides.md  ->  input/concept-map.json  ->  this file
+\documentclass[10.5pt,twoside]{article}
+\usepackage[tiro]{edtech}
+\geometry{left=13mm,right=13mm,top=17mm,bottom=17mm,headsep=5mm}
+\etset{brand=EduBrand, book={HSC Physics 1st Paper · Chapter-10},
+       chapter={আদর্শ গ্যাস ও গ্যাসের গতিতত্ত্ব}, logo=logo-placeholder.png,
+       ytid=XXXXXXXXXXX, qrsize=1.3cm}
+\pagestyle{note}
+\setlength{\columnseprule}{0.4pt}\setlength{\columnsep}{6mm}
+
+%% ---------- reusable diagrams
+\tikzset{gasdot/.style={circle,fill=black,inner sep=0pt,minimum size=2.6pt}}
+\newcommand\gascyl[4]{% x-shift, gas height, #dots, label
+ \begin{scope}[xshift=#1cm]
+  \draw[thick](0,0)--(0,1.9)(1.7,1.9)--(1.7,0)--(0,0);
+  \fill[black!12](0.02,0.02) rectangle (1.68,#2);
+  \fill[black!60](0,#2) rectangle (1.7,#2+0.16);
+  \draw[thick](0.85,#2+0.16)--(0.85,2.2);
+  \pgfmathsetseed{#3}
+  \foreach \i in {1,...,#3}{\node[gasdot] at ({0.12+1.46*rnd},{0.1+(#2-0.2)*rnd}){};}
+  \node[font=\footnotesize] at (0.85,-0.3){#4};
+ \end{scope}}
+\newcommand\thermo[2]{% x, mercury height
+ \begin{scope}[xshift=#1cm]
+  \draw[rounded corners=2pt](0,0.25) rectangle (0.22,1.8); \draw(0.11,0.15) circle(0.17);
+  \fill[etred](0.11,0.15) circle(0.12); \fill[etred](0.07,0.2) rectangle (0.15,#2);
+ \end{scope}}
+
+\begin{document}
+\chapterbanner{দশম অধ্যায়}{আদর্শ গ্যাস ও গ্যাসের গতিতত্ত্ব}{Ideal Gas \& Kinetic Theory of Gas}{\ytqr[1.55cm]{00:00}}
+
+\sectionbar{\centering Lecture Map — ভিডিও অনুযায়ী টপিক ভাগ}
+{\renewcommand\arraystretch{1.35}\small
+\noindent\begin{tabularx}{\linewidth}{|>{\raggedright\arraybackslash}p{0.27\linewidth}|c|c|X|c|}\hline
+\rowcolor{etgray}\textbf{টাইপের নাম} & \textbf{গুরুত্ব} & \textbf{ভিডিওতে} & \textbf{যা যা আছে} & \textbf{পৃষ্ঠা}\\\hline
+{\latinserif\bfseries Type-01}: গ্যাসের সূত্র ও আদর্শ গ্যাস সমীকরণ & \stars{5} & \ytlink{04:15}{04:15} & বয়েল, চার্লস, সমন্বিত সূত্র, ১টি ম্যাথ, ১টি টিপস & ২\\\hline
+{\latinserif\bfseries Type-02}: গতিতত্ত্ব ও মূল গড় বর্গবেগ & \stars{5} & \ytlink{21:40}{21:40} & $P=\frac13\rho c^2$, $c_{\text{rms}}$, স্বাধীনতার মাত্রা, ১টি ম্যাথ & ২\\\hline
+{\latinserif\bfseries Type-03}: আপেক্ষিক আর্দ্রতা ও শিশিরাঙ্ক & \stars{4} & \ytlink{39:05}{39:05} & গ্লেসিয়ারের ধ্রুবক, শিশিরাঙ্ক নির্ণয় & ২\\\hline
+\end{tabularx}}
+
+\slantedtitle{গুরুত্বপূর্ণ সূত্রাবলি ও বিশ্লেষণ}
+{\renewcommand\arraystretch{1.2}
+\noindent\begin{tabularx}{\linewidth}{|p{0.47\linewidth}|X|}\hline
+\rowcolor{etgray}\multicolumn{1}{|c|}{\headfont\bfseries সূত্রাবলি} & \multicolumn{1}{c|}{\headfont\bfseries বিশ্লেষণ}\\\hline
+\withqr{04:15}{$\blacksquare$ \textbf{বয়েলের সূত্র:}\\[2pt]
+ $\bullet\ P_1V_1=P_2V_2$\quad [যখন $T$, $n$ স্থির]\\[2pt]
+ \hspace*{1em}প্রাথমিক চাপ $=P_1$,\ চূড়ান্ত চাপ $=P_2$\\
+ \hspace*{1em}প্রাথমিক আয়তন $=V_1$,\ চূড়ান্ত আয়তন $=V_2$}
+&\centering\begin{tikzpicture}[scale=0.56,baseline=(current bounding box.center)]
+  \gascyl{0}{1.4}{16}{$P_1,V_1$}\gascyl{4.2}{0.75}{16}{$P_2,V_2$}
+  \draw[-{Latex},line width=2pt](2.1,1.0)--(3.9,1.0);
+  \node[font=\scriptsize,above] at (3.0,1.1){$T,n$ স্থির};
+  \draw[-{Latex[length=2mm]},thick,etred](5.05,2.75)--(5.05,2.3) node[right,font=\scriptsize,pos=0]{চাপ বাড়ানো};
+ \end{tikzpicture}\tabularnewline\hline
+\withqr{09:10}{$\blacksquare$ \textbf{চার্লসের সূত্র:}\\[2pt]
+ $\bullet\ \dfrac{V_1}{T_1}=\dfrac{V_2}{T_2}$\quad [যখন $P$, $n$ স্থির]\\[2pt]
+ \hspace*{1em}প্রাথমিক তাপমাত্রা $=T_1$,\ চূড়ান্ত তাপমাত্রা $=T_2$\\
+ \hspace*{1em}($T$ অবশ্যই কেলভিন এককে)}
+&\centering\begin{tikzpicture}[scale=0.56,baseline=(current bounding box.center)]
+  \thermo{0}{0.7}\gascyl{0.45}{0.8}{12}{$V_1$}\node[font=\scriptsize] at (0.11,-0.3){$T_1$};
+  \draw[-{Latex},line width=2pt](2.35,1.0)--(3.85,1.0);
+  \node[font=\scriptsize,above] at (3.1,1.1){$P,n$ স্থির};
+  \thermo{4.1}{1.5}\gascyl{4.55}{1.45}{12}{$V_2$}\node[font=\scriptsize] at (4.21,-0.3){$T_2$};
+  \fill[orange](6.55,0.05) .. controls (6.3,0.2) and (6.4,0.4) .. (6.55,0.6) .. controls (6.7,0.4) and (6.8,0.2) .. (6.55,0.05);
+  \node[font=\scriptsize,below] at (6.55,0.05){তাপ};
+ \end{tikzpicture}\tabularnewline\hline
+\withqr{12:30}{$\blacksquare$ \textbf{আদর্শ গ্যাস সমীকরণ:}\quad $PV=nRT$\\[3pt]
+ $\blacksquare$ \textbf{সমন্বিত সূত্র:}\\[2pt]
+ $\bullet\ \dfrac{P_1V_1}{T_1}=\dfrac{P_2V_2}{T_2}$\qquad $\bullet\ \dfrac{P_1}{d_1T_1}=\dfrac{P_2}{d_2T_2}$}
+& যেখানে, $n=\dfrac{W}{M}=\dfrac{\text{নির্দিষ্ট গ্যাসের ভর}}{\text{আণবিক ভর}}$\\[3pt]
+  $R=\SI{8.314}{J.mol^{-1}.K^{-1}}$;\quad $d_1, d_2=$ প্রাথমিক ও চূড়ান্ত ঘনত্ব\tabularnewline\hline
+\withqr{21:40}{$\blacksquare$ \textbf{গ্যাসের গতিতত্ত্ব:}\\[2pt]
+ $\bullet\ PV=\dfrac13 mNc^2=\dfrac13 Mc^2$\\[2pt]
+ $\bullet\ P=\dfrac13\rho c^2$,\qquad $\bullet\ PV=\dfrac23E$\\[2pt]
+ $\bullet\ c_{\text{rms}}=\sqrt{\dfrac{3RT}{M}}=\sqrt{\dfrac{3P}{\rho}}=\sqrt{\dfrac{3kT}{m}}$}
+&\centering\begin{tikzpicture}[scale=0.7,baseline=(current bounding box.center),font=\scriptsize]
+  \draw[thick](0,0)--(2.2,0)--(2.2,2.2)--(0,2.2)--cycle;
+  \draw[thick](0,2.2)--(0.8,2.75)--(3.0,2.75)--(2.2,2.2)(3.0,2.75)--(3.0,0.55)--(2.2,0);
+  \fill[black!25](2.2,0)--(3.0,0.55)--(3.0,2.75)--(2.2,2.2)--cycle;
+  \draw[dashed](0,0)--(0.8,0.55)--(3.0,0.55)(0.8,0.55)--(0.8,2.75);
+  \foreach \x/\y/\dx/\dy/\l in {0.5/1.7/0.45/0.25/1,1.6/1.1/-0.35/0.4/2,0.9/0.55/0.5/-0.15/3,1.75/1.85/0.3/0.25/4}{
+    \node[circle,draw,fill=white,inner sep=1.1pt] at (\x,\y){};
+    \draw[-{Latex[length=1.6mm]}](\x,\y)--++(\dx,\dy) node[above right,inner sep=1pt]{$c_{\l}$};}
+  \draw[{Latex}-{Latex}](0,-0.25)--(2.2,-0.25) node[midway,below]{$l$};
+  \draw[-{Latex}](-0.3,-0.3)--(-0.3,2.6) node[left]{$z$};
+ \end{tikzpicture}\\[-2pt]
+ {\scriptsize $m=$ একটি অণুর ভর,\ $N=$ অণুর সংখ্যা,\ $c=$ মূল গড় বর্গবেগ}\tabularnewline\hline
+\end{tabularx}}
+
+
+
+\begin{remember}
+\noindent$\blacklozenge$\ $P=\SI{1}{atm}=\SI{101325}{Pa}=\SI{760}{mm}$ Hg $=\SI{76}{cm}$ Hg\qquad
+$\blacklozenge$\ $T(\mathrm{K})=\theta(\si{\degreeCelsius})+273$\\
+$\blacklozenge$\ $\SI{1}{m^3}=\SI{1000}{L}$,\ $\SI{1}{L}=\SI{1000}{cm^3}$\qquad
+$\blacklozenge$\ $R=\SI{8.314}{J.mol^{-1}.K^{-1}}=\SI{0.0821}{L.atm.mol^{-1}.K^{-1}}$
+\end{remember}
+\newpage
+\begin{multicols}{2}
+\typehead{01}{গ্যাসের সূত্র ও আদর্শ গ্যাস সমীকরণ}
+\begin{conceptbox}
+\withqr[1.35cm]{17:45}{\textbf{কনসেপ্ট:} নির্দিষ্ট ভরের গ্যাসের চাপ, আয়তন ও তাপমাত্রার যেকোনো দুটি অবস্থার মধ্যে সম্পর্ক একটি সূত্রেই লেখা যায়—
+$$\frac{P_1V_1}{T_1}=\frac{P_2V_2}{T_2}$$}
+যে রাশি স্থির, সেটি দুই দিক থেকে কেটে দিলেই বয়েল ($T$ স্থির), চার্লস ($P$ স্থির) বা চাপীয় সূত্র ($V$ স্থির) পাওয়া যায়।
+\begin{roundbox}[left=3pt,top=2pt,bottom=2pt]
+$\bullet$ \textbf{বোর্ডে বারবার এসেছে} — সমন্বিত সূত্রের ম্যাথ।\\
+$\bullet$ $n=W/M$ দিয়ে ভর থেকে মোল বের করা প্রায় সব ম্যাথে লাগে।
+\end{roundbox}
+\end{conceptbox}
+
+\begin{tipbox}
+\withqr[1.35cm]{07:50}{তাপমাত্রা সবসময় \textbf{কেলভিনে} বসাবে — $\si{\degreeCelsius}$ এর সাথে \textbf{২৭৩ যোগ} করতে ভুলবে না। পরীক্ষায় অনেকে এখানেই নম্বর হারায়।}
+\end{tipbox}
+
+\withqr[1.35cm]{14:05}{\prashna{১} \SI{27}{\degreeCelsius} তাপমাত্রায় ও \SI{2}{atm} চাপে একটি গ্যাসের আয়তন \SI{10}{L}। তাপমাত্রা \SI{127}{\degreeCelsius} ও চাপ \SI{4}{atm} করা হলে গ্যাসের আয়তন কত হবে?\hfill[ভিডিও ম্যাথ]}
+\medskip\textbf{সমাধান:}\par
+\solgiven{
+$\dfrac{P_1V_1}{T_1}=\dfrac{P_2V_2}{T_2}$\\[3pt]
+$\Rightarrow V_2=\dfrac{P_1V_1T_2}{P_2T_1}$\\[3pt]
+$=\dfrac{2\times10\times400}{4\times300}$\\[3pt]
+$=\SI{6.67}{L}$\ans}
+{\textbf{দেওয়া আছে,}\\ $P_1=\SI{2}{atm}$\\ $V_1=\SI{10}{L}$\\ $T_1=27+273=\SI{300}{K}$\\ $P_2=\SI{4}{atm}$\\ $T_2=127+273=\SI{400}{K}$}
+
+\columnbreak
+\typehead{02}{গতিতত্ত্ব ও মূল গড় বর্গবেগ}
+\begin{conceptbox}
+\withqr[1.35cm]{24:30}{\textbf{কনসেপ্ট:} গ্যাসের চাপ আসে অণুগুলোর পাত্রের দেয়ালে ক্রমাগত ধাক্কা থেকে। অণুগুলোর বেগ ভিন্ন ভিন্ন, তাই আমরা \textbf{মূল গড় বর্গবেগ} ব্যবহার করি—}
+$$c_{\text{rms}}=\sqrt{\frac{c_1^2+c_2^2+\dots+c_N^2}{N}}=\sqrt{\frac{3RT}{M}}$$
+$\blacksquare$ \textbf{স্বাধীনতার মাত্রা ($f$):}\\
+\begin{tabular}{@{}ll@{}}
+এক পরমাণুক (He, Ar) & $f=3$\\
+দ্বি পরমাণুক ($\mathrm{O_2,N_2}$) & $f=5$\\
+বহু পরমাণুক ($\mathrm{NH_3}$) & $f=6$
+\end{tabular}\hfill\ytqr[1.35cm]{31:00}
+\end{conceptbox}
+
+\begin{tipbox}[কমন ভুল]
+\withqr[1.35cm]{24:30}{$c_{\text{rms}}$ এর সূত্রে $M$ অবশ্যই \textbf{kg mol$^{-1}$} এককে বসাবে। $\mathrm{O_2}$ এর জন্য $M=\SI{0.032}{kg.mol^{-1}}$, \SI{32}{} নয়।}
+\end{tipbox}
+
+\withqr[1.35cm]{27:15}{\prashna{২} \SI{27}{\degreeCelsius} তাপমাত্রায় অক্সিজেন অণুর মূল গড় বর্গবেগ নির্ণয় কর।\hfill[ভিডিও ম্যাথ]}
+\medskip\textbf{সমাধান:}\par
+\solgiven{
+$c_{\text{rms}}=\sqrt{\dfrac{3RT}{M}}$\\[3pt]
+$=\sqrt{\dfrac{3\times8.314\times300}{0.032}}$\\[3pt]
+$=\sqrt{233831}$\\[3pt]
+$=\SI{483.6}{m.s^{-1}}$\ans}
+{\textbf{দেওয়া আছে,}\\ $T=27+273=\SI{300}{K}$\\ $M=\SI{0.032}{kg.mol^{-1}}$\\ $R=\SI{8.314}{J.mol^{-1}.K^{-1}}$}
+\end{multicols}
+
+\begin{multicols}{2}
+\typehead{03}{আপেক্ষিক আর্দ্রতা ও শিশিরাঙ্ক}
+\begin{conceptbox}
+\withqr{39:05}{$\blacksquare$ \textbf{আপেক্ষিক আর্দ্রতা:}\ $R=\dfrac{f}{F}\times100\%$\\[4pt]
+$\blacksquare$ \textbf{শিশিরাঙ্ক:}\ $\theta=\theta_1-G(\theta_1-\theta_2)$}
+{\small $f=$ শিশিরাঙ্কে সম্পৃক্ত বাষ্পচাপ,\ $F=$ বায়ুর তাপমাত্রায় সম্পৃক্ত বাষ্পচাপ,\ $\theta_1,\theta_2=$ শুষ্ক ও সিক্ত বাল্বের পাঠ,\ $G=$ গ্লেসিয়ারের উৎপাদক।}
+\end{conceptbox}
+\columnbreak
+\withqr{41:20}{\prashna{৩} শুষ্ক ও সিক্ত বাল্বের পাঠ যথাক্রমে \SI{30.4}{\degreeCelsius} ও \SI{22.4}{\degreeCelsius}; গ্লেসিয়ারের উৎপাদক $G=1.65$। শিশিরাঙ্ক নির্ণয় কর।\hfill[ভিডিও ম্যাথ]}
+\solgiven[0.4]{$\theta=\theta_1-G(\theta_1-\theta_2)$\\ $=30.4-1.65(30.4-22.4)$\\ $=\SI{17.2}{\degreeCelsius}$\ans}
+{\textbf{দেওয়া আছে,}\\ $\theta_1=\SI{30.4}{\degreeCelsius}$\\ $\theta_2=\SI{22.4}{\degreeCelsius}$\\ $G=1.65$}
+\end{multicols}
+\end{document}

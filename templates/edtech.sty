@@ -1,0 +1,396 @@
+%% ======================================================================
+%%  edtech.sty — Bangla EdTech Studio shared style  (compile with XeLaTeX)
+%%  One package for: board MCQ/CQ papers, model tests, BUET written,
+%%  notes (with/without QR), practice sheets.  Slides use edtech-slides.sty.
+%%
+%%  Package options:
+%%    tiro (default) | notoserif   -> Bangla body font
+%%    a4 (default) | letter | legal -> paper
+%% ======================================================================
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{edtech}[2026/10/29 v1.0 Bangla EdTech Studio]
+
+\newif\if@et@noto \@et@notofalse
+\def\et@paper{a4paper}
+\DeclareOption{tiro}{\@et@notofalse}
+\DeclareOption{notoserif}{\@et@nototrue}
+\DeclareOption{a4}{\def\et@paper{a4paper}}
+\DeclareOption{letter}{\def\et@paper{letterpaper}}
+\DeclareOption{legal}{\def\et@paper{legalpaper}}
+\ProcessOptions\relax
+
+%% ---------------------------------------------------------------- packages
+\PassOptionsToPackage{table}{xcolor}
+\RequirePackage[\et@paper]{geometry}
+\RequirePackage{amsmath,amssymb}
+\RequirePackage{fontspec}
+\RequirePackage{unicode-math}
+\RequirePackage{xcolor}
+\RequirePackage{graphicx}
+\RequirePackage{tikz}
+\usetikzlibrary{calc,arrows.meta,positioning,patterns,decorations.pathmorphing,decorations.markings,shapes.geometric,angles,quotes,3d,shadows}
+\RequirePackage{pgfplots}\pgfplotsset{compat=1.18}
+\RequirePackage{circuitikz}
+\ctikzset{label/align=straight}
+\RequirePackage[most]{tcolorbox}
+\RequirePackage{tabularx,array,multirow,booktabs,makecell,xltabular}
+\RequirePackage{multicol}
+\RequirePackage{needspace}
+\RequirePackage{enumitem}
+\RequirePackage{fancyhdr}
+\RequirePackage{siunitx}
+\RequirePackage[version=4]{mhchem}
+\RequirePackage{xparse}
+\RequirePackage{etoolbox}
+\RequirePackage{qrcode}
+\RequirePackage[hidelinks]{hyperref}
+
+%% ---------------------------------------------------------------- fonts
+%  Script-aware font switching (XeTeX interchar classes):
+%    Bangla characters  -> Tiro Bangla (or Noto Serif Bengali); bold = Noto Serif Bengali Bold
+%    Latin characters   -> TeX Gyre Termes (Times-like, as in board papers), with real bold/italic
+%  Only switches between these two families, so \ttfamily, \headfont etc. are never disturbed.
+\newfontfamily\latinserif{TeX Gyre Termes}[NFSSFamily=etlat]
+\if@et@noto
+  \setmainfont{Noto Serif Bengali}[Script=Bengali,NFSSFamily=etbn,
+     BoldFont={Noto Serif Bengali Bold},ItalicFont={Noto Serif Bengali},ItalicFeatures={FakeSlant=0.15}]
+\else
+  \setmainfont{Tiro Bangla}[Script=Bengali,NFSSFamily=etbn,
+     ItalicFont={Tiro Bangla Italic},
+     BoldFont={Noto Serif Bengali Bold},
+     BoldItalicFont={Noto Serif Bengali Bold},BoldItalicFeatures={FakeSlant=0.15}]
+\fi
+\newfontfamily\bnfamily{Tiro Bangla}[Script=Bengali]
+\def\et@latfam{etlat}\def\et@bnfam{etbn}
+\def\et@tobn{\ifx\f@family\et@latfam\fontfamily{etbn}\selectfont\fi}
+\def\et@tolat{\ifx\f@family\et@bnfam\fontfamily{etlat}\selectfont\fi}
+\newXeTeXintercharclass\et@bncls
+\@tempcnta="0980\relax
+\loop\ifnum\@tempcnta<"0A00\relax\XeTeXcharclass\@tempcnta=\et@bncls\advance\@tempcnta\@ne\repeat
+\XeTeXcharclass"0964=\et@bncls \XeTeXcharclass"0965=\et@bncls
+\XeTeXcharclass"200C=\et@bncls \XeTeXcharclass"200D=\et@bncls
+\XeTeXinterchartoks 0 \et@bncls = {\et@tobn}
+\XeTeXinterchartoks 4095 \et@bncls = {\et@tobn}
+\XeTeXinterchartoks \et@bncls 0 = {\et@tolat}
+\XeTeXinterchartoks 4095 0 = {\et@tolat}
+\XeTeXinterchartokenstate=1
+\setsansfont{Hind Siliguri}[Script=Bengali,BoldFont={Hind Siliguri Bold}]
+\newfontfamily\headfont{Hind Siliguri}[Script=Bengali,BoldFont={Hind Siliguri Bold}]
+\newfontfamily\latinsans{TeX Gyre Heros}
+\setmonofont{DejaVu Sans Mono}[Scale=0.85]
+\setmathfont{TeX Gyre Termes Math}
+\sisetup{mode=math,inter-unit-product=\,,per-mode=power}
+
+\linespread{1.12}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{2pt}
+\raggedbottom
+\emergencystretch=2.5em  % Bangla has no hyphenation patterns: let lines stretch instead of overflowing
+
+%% ---------------------------------------------------------------- colors
+\definecolor{etblack}{HTML}{111111}
+\definecolor{etblue}{HTML}{2F64C4}
+\definecolor{etdeepblue}{HTML}{1F4E9A}
+\definecolor{etred}{HTML}{C8102E}
+\definecolor{etgray}{HTML}{E4E4E4}
+\definecolor{etgraydark}{HTML}{8A8A8A}
+\definecolor{etyellow}{HTML}{FFC400}
+\definecolor{etfill}{HTML}{EAF1FB}
+\colorlet{etaccent}{etblue}
+
+%% ---------------------------------------------------------------- settings
+%  \etset{brand=..., book=..., chapter=..., logo=path, subject=..., ...}
+\pgfkeys{/et/.is family,/et,
+  brand/.store in=\et@brand,       brand=EduBrand,
+  book/.store in=\et@book,         book={},
+  chapter/.store in=\et@chapter,   chapter={},
+  subject/.store in=\et@subject,   subject={},
+  logo/.store in=\et@logo,         logo={},
+  logoheight/.store in=\et@logoh,  logoheight=0.55cm,
+  ytid/.store in=\et@ytid,         ytid={},
+  qrsize/.store in=\et@qrsize,     qrsize=1.7cm,
+  watermark/.store in=\et@wm,      watermark={},
+  footer/.store in=\et@footer,     footer={},
+}
+\newcommand\etset[1]{\pgfkeys{/et,#1}}
+\newcommand\etlogo[1][\et@logoh]{\ifx\et@logo\@empty\else\includegraphics[height=#1]{\et@logo}\fi}
+
+%% ---------------------------------------------------------------- Bangla digits
+\def\bnconvert#1{\bn@loop#1\@nil}
+\def\bn@loop#1{\ifx\@nil#1\else\bn@d{#1}\expandafter\bn@loop\fi}
+\def\bn@d#1{\ifcase#1 ০\or ১\or ২\or ৩\or ৪\or ৫\or ৬\or ৭\or ৮\or ৯\fi}
+\newcommand\bnnum[1]{\expandafter\bnconvert\expandafter{\number#1}}
+\newcommand\bnarabic[1]{\expandafter\bnconvert\expandafter{\the\value{#1}}}
+\def\bn@arabic#1{\expandafter\bnconvert\expandafter{\number#1}}
+\AddEnumerateCounter{\bnarabic}{\bn@arabic}{৮৮}
+\def\bn@alph#1{\ifcase#1\or ক\or খ\or গ\or ঘ\or ঙ\or চ\or ছ\or জ\fi}
+\newcommand\bnalph[1]{\expandafter\bn@alph\csname c@#1\endcsname}
+\AddEnumerateCounter{\bnalph}{\bn@alph}{ঙ}
+\newcommand\twodigit[1]{\ifnum#1<10 0\fi\number#1}
+
+%% ---------------------------------------------------------------- QR / YouTube
+%  \ytqr[size]{mm:ss}            uses ytid from \etset
+%  \ytqrid[size]{VIDEOID}{h:mm:ss}
+%  URL = https://www.youtube.com/watch?v=ID&t=<sec>s&noapp=1  (always opens in browser)
+\begingroup\catcode`\&=12 \gdef\et@amp{&}\endgroup
+\def\et@secs#1{\et@secsA#1::\@nil}
+\def\et@secsA#1:#2:#3:#4\@nil{\ifx\relax#3\relax\the\numexpr#1*60+#2\relax\else\the\numexpr#1*3600+#2*60+#3\relax\fi}
+\newcommand\yturl[2]{https://www.youtube.com/watch?v=#1\et@amp t=\et@secs{#2}s\et@amp noapp=1}
+%  XeTeX/dvipdfmx: \href cannot wrap the QR's vbox, so we place a link annotation of the box's exact size.
+\newsavebox\et@lbox
+\newcommand\linkbox[2]{\sbox\et@lbox{#2}\leavevmode\rlap{\special{pdf:ann width \the\wd\et@lbox\space height \the\ht\et@lbox\space depth \the\dp\et@lbox\space
+  << /Type /Annot /Subtype /Link /Border [0 0 0] /A << /S /URI /URI (#1) >> >>}}\usebox\et@lbox}
+\def\et@hrefqr#1#2{\linkbox{#1}{\qrcode[height=#2,level=M,nolink]{#1}}}
+\newcommand\et@qrbox[3]{% size, url, label  -> scannable when printed AND clickable in the PDF
+  \begingroup\edef\et@url{#2}%
+  \begin{tabular}{@{}c@{}}\expandafter\et@hrefqr\expandafter{\et@url}{#1}\\[-1pt]
+    {\fontsize{6.5}{7}\selectfont\ttfamily #3}\end{tabular}\endgroup}
+\NewDocumentCommand\ytqr{O{\et@qrsize} m}{\et@qrbox{#1}{\yturl{\et@ytid}{#2}}{#2}}
+\NewDocumentCommand\ytqrid{O{\et@qrsize} m m}{\et@qrbox{#1}{\yturl{#2}{#3}}{#3}}
+\NewDocumentCommand\urlqr{O{\et@qrsize} m o}{\et@qrbox{#1}{#2}{\IfValueT{#3}{#3}}}
+%  QR floated to the right of a text block:  \withqr{mm:ss}{text}
+\NewDocumentCommand\withqr{O{\et@qrsize} m +m}{%
+  \par\noindent\begin{minipage}[t]{\dimexpr\linewidth-#1-4mm}\vspace{0pt}#3\end{minipage}\hfill
+  \begin{minipage}[t]{#1}\vspace{0pt}\centering\ytqr[#1]{#2}\end{minipage}\par}
+
+%% ---------------------------------------------------------------- small labels
+\newcommand\blacklabel[1]{{\headfont\bfseries\colorbox{etblack}{\color{white}\strut\,#1\,}}}
+\newcommand\partlabel[1]{\tikz[baseline=(x.base)]\node[fill=etblack,text=white,inner sep=2pt,minimum size=1.15em,font=\headfont\bfseries](x){#1};}
+\newcommand\prashna[1]{\tikz[baseline=(x.base)]\node[fill=etblack,text=white,inner sep=2pt,font=\headfont\bfseries](x){প্রশ্ন\,$\blacktriangleright$\,#1};}
+\newcommand\ans{\unskip\nobreak\hfill\textbf{(Ans.)}}
+\newcommand\boardtag[1]{{\small\color{etblack}[#1]}}
+\newcommand\srctag[1]{\unskip\nobreak\hfill\penalty50\hskip1em\null\nobreak\hfill{\color{etdeepblue}[#1]}\par}
+\newfontfamily\symfont{DejaVu Sans}
+\newcommand\stars[1]{{\symfont\footnotesize\foreach\i in {1,...,5}{\ifnum\i>#1 ☆\else ★\fi}}}
+\newcommand\codeboxes[1]{\begingroup\setlength\fboxsep{2pt}\setlength\fboxrule{0.8pt}\edef\et@tmpcb{#1}\expandafter\et@cb\et@tmpcb\@nil\endgroup}
+\def\et@cb#1{\ifx\@nil#1\else\fbox{\makebox[1.0em]{\textbf{#1}}}\kern-0.8pt\expandafter\et@cb\fi}
+\newcommand\markat[1]{\unskip\nobreak\hfill\penalty50\hskip1em\null\nobreak\hfill#1\par}
+
+%% Solution with a "দেওয়া আছে" side column (vertical rule), as in book solutions
+\NewDocumentCommand\solgiven{O{0.36} +m +m}{% [given-width] {working} {given}
+  \par\noindent\begin{minipage}[t]{\dimexpr\linewidth-#1\linewidth-8pt\relax}\vspace{0pt}#2\end{minipage}%
+  \hfill\vrule width0.6pt\hspace{4pt}%
+  \begin{minipage}[t]{#1\linewidth}\vspace{0pt}\small#3\end{minipage}\par\medskip}
+
+%% ---------------------------------------------------------------- boxes
+\tcbset{etbase/.style={enhanced,boxrule=0.6pt,arc=2pt,left=5pt,right=5pt,top=4pt,bottom=4pt,colback=white,colframe=etblack,fontupper=\normalsize}}
+\newtcolorbox{conceptbox}[1][]{etbase,breakable,sharp corners,borderline={0.6pt}{0pt}{etblack,dashed},boxrule=0pt,frame hidden,#1}
+\newtcolorbox{roundbox}[1][]{etbase,breakable,arc=8pt,#1}
+\newtcolorbox{shadowbox}[1][]{etbase,breakable,sharp corners,boxrule=0.6pt,drop fuzzy shadow,#1}
+\newtcolorbox{tipbox}[1][ভিডিওতে বলা টিপস]{etbase,breakable,colframe=etred,colbacktitle=etred,coltitle=white,
+  title={\headfont\bfseries #1},fonttitle=\headfont\bfseries,arc=4pt,boxrule=0.8pt}
+\newtcolorbox{remember}[1][দ্রুত মনে রাখো]{enhanced,sharp corners,colback=white,colframe=etblack,
+  boxrule=0.5pt,borderline={0.5pt}{2pt}{etblack},left=10pt,top=6pt,bottom=6pt,
+  overlay unbroken={\node[fill=etgray,rounded corners=3pt,inner sep=4pt,font=\headfont\bfseries] at ([yshift=6mm]frame.north){#1};},
+  before skip=9mm}
+\newcommand\pilltitle[1]{\begin{center}\tikz\node[fill=etgray,rounded corners=4pt,inner xsep=12pt,inner ysep=4pt,font=\headfont\bfseries\large]{#1};\end{center}}
+
+%% Black full-width section bar
+\newcommand\sectionbar[1]{\par\Needspace{5\baselineskip}\smallskip\noindent\colorbox{etblack}{\makebox[\dimexpr\linewidth-2\fboxsep]{\color{white}\headfont\bfseries\strut #1}}\par\nopagebreak\smallskip\nopagebreak}
+%% Slanted title with black corner triangle and shadow (গুরুত্বপূর্ণ সূত্রাবলি ...)
+\newcommand\slantedtitle[1]{\par\Needspace{8\baselineskip}\medskip\noindent\begin{tikzpicture}
+  \node[draw=etblack,line width=0.8pt,minimum width=\linewidth-4pt,minimum height=9mm,inner sep=0pt,fill=white,
+        font=\headfont\bfseries\Large](t){#1};
+  \fill[etblack]([xshift=1.2pt,yshift=-1.2pt]t.south east) rectangle ++(2.2pt,9mm-1pt);
+  \fill[etblack](t.north west)--++(1.4cm,0)--([yshift=-0.5pt]t.south west)--cycle;
+  \fill[white](t.north west)++(1.0cm,0)--++(0.3cm,0)--++(-1.3cm,-0.65cm)--++(0,-0.25cm)--cycle;
+\end{tikzpicture}\par\medskip}
+%% Type header:  \typehead{01}{ভেক্টরের লব্ধি}
+\newcommand\typehead[2]{\par\Needspace{8\baselineskip}\noindent\begin{tikzpicture}
+  \node[draw=etblack,line width=0.7pt,minimum width=\linewidth-1.6pt,minimum height=8mm,inner sep=0pt](b){};
+  \node[anchor=west,font=\latinsans\bfseries\large] (ty) at ([xshift=2mm]b.west){Type};
+  \node[anchor=west,fill=etblack,text=white,font=\latinsans\bfseries,inner sep=2.5pt] (n) at ([xshift=1mm]ty.east){#1};
+  \node[anchor=center,font=\headfont\bfseries\large] at ($(n.east)!0.5!(b.east)$){#2};
+\end{tikzpicture}\par\nopagebreak\smallskip\nopagebreak}
+%% Topic bar (practice sheet, blue)
+\newcommand\topicbar[1]{\par\Needspace{6\baselineskip}\medskip\noindent\colorbox{etaccent}{\makebox[\dimexpr\linewidth-2\fboxsep]{\color{white}\headfont\large\strut #1}}\par\nopagebreak\smallskip\nopagebreak}
+
+%% Chapter banner:  \chapterbanner{দ্বিতীয় অধ্যায়}{ভেক্টর}{Vector}{<right content: \ytqr{00:00} or \etlogo>}
+\newsavebox\et@fit
+\newcommand\et@fitbox[2]{\sbox\et@fit{#2}\ifdim\wd\et@fit>\dimexpr#1\relax\resizebox{\dimexpr#1\relax}{!}{\usebox\et@fit}\else\usebox\et@fit\fi}
+\newcommand\ytlink[2]{\begingroup\edef\et@url{\yturl{\et@ytid}{#1}}\expandafter\href\expandafter{\et@url}{\color{etdeepblue}\underline{#2}}\endgroup}
+\newcommand\chapterbanner[4]{\par\noindent\begin{tikzpicture}
+  \node[draw=etblack,line width=1.2pt,rounded corners=8pt,minimum width=\linewidth-2pt,minimum height=3cm,inner sep=0pt](B){};
+  \fill[etblack]([xshift=6mm,yshift=-4mm]B.north west)--++(4.6cm,0)--++(-0.9cm,-2.2cm)--++(-3.7cm,0)--cycle;
+  \node[fill=white,rounded corners=3pt,font=\headfont\bfseries\Large,inner sep=4pt] at ([xshift=2.9cm,yshift=-1.5cm]B.north west){#1};
+  \coordinate (L) at ([xshift=5.2cm]B.west); \coordinate (R) at ([xshift=-4.4cm]B.east);
+  \node[inner sep=0pt] at ([yshift=4.5mm]$(L)!0.5!(R)$){\et@fitbox{\linewidth-10.2cm}{\headfont\bfseries\fontsize{26}{30}\selectfont #2}};
+  \node[font=\latinserif\bfseries\Large,text width=\linewidth-10.6cm,align=center] at ([yshift=-7.5mm]$(L)!0.5!(R)$){#3};
+  \draw[line width=1.1pt]([xshift=-4.2cm,yshift=-3mm]B.north east)--++(3.2cm,0)--++(0.9cm,-1.2cm)--++(-0.9cm,-1.2cm)--++(-3.2cm,0)--++(0.9cm,1.2cm)--cycle;
+  \node at ([xshift=-2.35cm]B.east){#4};
+\end{tikzpicture}\par\medskip}
+
+%% Note page style: alternating dotted header + brand pill footer
+\newcommand\brandpill{\tikz[baseline=(p.base)]\node[fill=etblack,text=white,rounded corners=3pt,inner sep=2.5pt,font=\latinsans\bfseries\small](p){\et@brand};}
+\newcommand\et@dots{\leaders\hbox to 0.6em{\hss.\hss}\hfill}
+\fancypagestyle{note}{\fancyhf{}%
+  \fancyhead[LE]{\makebox[\textwidth]{\bnnum{\value{page}}\,\et@dots\,\textbf{\et@brand}\,$\blacktriangleright$\,\et@book}}%
+  \fancyhead[RO]{\makebox[\textwidth]{\et@chapter\,$\blacktriangleright$\,\textbf{\et@brand}\,\et@book\,\et@dots\,\bnnum{\value{page}}}}%
+  \fancyfoot[LE]{\brandpill}\fancyfoot[RO]{\brandpill}%
+  \renewcommand\headrulewidth{0pt}}
+%% Black footer bar: subject | page | chapter (practice sheet)
+\fancypagestyle{barfoot}{\fancyhf{}\renewcommand\headrulewidth{0pt}%
+  \fancyfoot[C]{\colorbox{etblack}{\makebox[\dimexpr\textwidth-2\fboxsep]{\color{white}\headfont\bfseries\strut
+     \et@subject\hfill\number\value{page}\hfill\et@chapter}}}}
+
+%% Diagonal watermark (set with \etset{watermark=...})
+\AddToHook{shipout/background}{\ifx\et@wm\@empty\else
+  \put(0,0){\begin{tikzpicture}[remember picture,overlay]
+   \node[rotate=55,text=black!5,font=\latinsans\bfseries\fontsize{80}{80}\selectfont] at (current page.center){\et@wm};
+  \end{tikzpicture}}\fi}
+
+%% ---------------------------------------------------------------- MCQ engine
+\newcounter{etq}
+\newif\ifet@circled \et@circledfalse
+\newcommand\optstyle[1]{\ifstrequal{#1}{circled}{\et@circledtrue}{\et@circledfalse}}
+\newcommand\et@lab[1]{\ifet@circled\tikz[baseline=(c.base)]\node[circle,draw,inner sep=0.2pt,minimum size=1.15em,font=\small](c){#1};\else(#1)\fi}
+\newlength\et@w \newlength\et@wmax
+\newcommand\et@measure[1]{\settowidth\et@w{\et@lab{ক}\ #1}\ifdim\et@w>\et@wmax\global\et@wmax=\et@w\fi}
+\newcommand\options[4]{\par\global\et@wmax=0pt
+  \et@measure{#1}\et@measure{#2}\et@measure{#3}\et@measure{#4}%
+  \begingroup\setlength\tabcolsep{0pt}%
+  \ifdim\et@wmax<\dimexpr(\linewidth-2.3em)/4-0.6em\relax
+     \noindent\hspace*{2.3em}\begin{tabular*}{\dimexpr\linewidth-2.3em}{@{\extracolsep{\fill}}llll@{}}
+       \et@lab{ক}\ #1 & \et@lab{খ}\ #2 & \et@lab{গ}\ #3 & \et@lab{ঘ}\ #4\end{tabular*}%
+  \else\ifdim\et@wmax<\dimexpr(\linewidth-2.3em)/2-0.6em\relax
+     \noindent\hspace*{2.3em}\begin{tabular}{@{}p{\dimexpr(\linewidth-2.3em)/2-1pt\relax}p{\dimexpr(\linewidth-2.3em)/2-1pt\relax}@{}}
+       \et@lab{ক}\ #1 & \et@lab{খ}\ #2\\ \et@lab{গ}\ #3 & \et@lab{ঘ}\ #4\end{tabular}%
+  \else
+     \begin{list}{}{\leftmargin=3.9em\labelwidth=1.6em\labelsep=0.3em\itemsep=0pt\parsep=0pt\topsep=0pt}
+       \item[\et@lab{ক}] #1 \item[\et@lab{খ}] #2 \item[\et@lab{গ}] #3 \item[\et@lab{ঘ}] #4\end{list}%
+  \fi\fi\endgroup\par}
+%  answer key collector
+\newtoks\et@keys
+\newcommand\et@addkey[1]{\edef\et@tmpk{\noexpand\et@keyitem{\number\value{etq}}}\global\et@keys\expandafter{\the\expandafter\et@keys\et@tmpk{#1}}}
+\newcommand\et@qnum{\bnarabic{etq}।}
+\newcommand\qnumstyle[1]{\ifstrequal{#1}{dot}{\renewcommand\et@qnum{\bnarabic{etq}.}}{\renewcommand\et@qnum{\bnarabic{etq}।}}}
+\newcommand\et@stem[1]{\par\noindent\hangindent=2.3em\hangafter=1\makebox[2.3em][l]{\et@qnum}#1\par}
+%  \mcq[ans]{stem}{a}{b}{c}{d}   ans = ক/খ/গ/ঘ (stored for \answerkey)
+\NewDocumentCommand\mcq{o +m m m m m}{\stepcounter{etq}\IfValueT{#1}{\et@addkey{#1}}%
+  \begin{minipage}[t]{\linewidth}\et@stem{#2}\options{#3}{#4}{#5}{#6}\end{minipage}\par\vspace{3pt}}
+%  multiple-completion: \mcqmulti[ans]{stem}{i}{ii}{iii}
+\NewDocumentCommand\mcqmulti{o +m m m m}{\stepcounter{etq}\IfValueT{#1}{\et@addkey{#1}}%
+  \begin{minipage}[t]{\linewidth}\et@stem{#2}%
+  \begin{list}{}{\leftmargin=3.9em\labelwidth=1.6em\labelsep=0.3em\itemsep=0pt\parsep=0pt\topsep=0pt}
+    \item[\textit{i.}] #3 \item[\textit{ii.}] #4 \item[\textit{iii.}] #5\end{list}%
+  \hspace*{2.3em}নিচের কোনটি সঠিক?\options{\textit{i} ও \textit{ii}}{\textit{i} ও \textit{iii}}{\textit{ii} ও \textit{iii}}{\textit{i, ii} ও \textit{iii}}%
+  \end{minipage}\par\vspace{3pt}}
+%  \stimulus[n]{passage}  -> "নিচের উদ্দীপকটি পড় এবং ৪ ও ৫ নং প্রশ্নের উত্তর দাও:"
+\NewDocumentCommand\stimulus{O{2} +m}{\par\smallskip
+  \begingroup\count255=\numexpr\value{etq}+1\relax\count254=\numexpr\value{etq}+#1\relax
+  \noindent\textbf{নিচের উদ্দীপকটি পড় এবং \bnnum{\count255}\ifnum#1>2\ থেকে\else\ ও\fi\ \bnnum{\count254}নং প্রশ্নের উত্তর দাও:}\endgroup
+  \par\noindent #2\par\smallskip}
+\newcommand\answerkey[1][উত্তরমালা]{\par\medskip
+  \begin{tcolorbox}[enhanced,sharp corners,colback=white,colframe=etblack,boxrule=0.6pt,
+     title={\headfont\bfseries #1},halign title=center,colbacktitle=etgray,coltitle=etblack,left=4pt,right=4pt]
+  \def\et@keyitem##1##2{\mbox{\fbox{\bnnum{##1}}\,##2}\hskip 0.9em plus 0.4em\relax}%
+  \small\the\et@keys\par\end{tcolorbox}}
+
+%% ---------------------------------------------------------------- CQ engine
+\newif\ifet@boardcq \et@boardcqtrue
+\newcommand\cqstyle[1]{\ifstrequal{#1}{book}{\et@boardcqfalse}{\et@boardcqtrue}}
+\newcommand\et@cqnum{\ifet@boardcq\bnarabic{etq}।\else\textbf{\bnarabic{etq}}\,$\blacktriangleright$\fi}
+\newcommand\et@part[3]{% label, text, mark
+  \par\noindent\hangindent=\dimexpr1.6em+2em\relax\hangafter=1
+  \hspace*{1.6em}\makebox[2em][l]{\ifet@boardcq(#1)\else#1.\fi}#2%
+  \unskip\nobreak\hfill\penalty50\hskip1em\null\nobreak\hfill
+  \ifet@boardcq\rlap{\makebox[2.2em][r]{#3}}\else#3\fi\par}
+%  \cq{stimulus}{ক}{খ}{গ}{ঘ}           marks default ১ ২ ৩ ৪
+\NewDocumentCommand\cq{+m m m m m O{১} O{২} O{৩} O{৪}}{\stepcounter{etq}%
+  \par\noindent\hangindent=1.6em\hangafter=1\makebox[1.6em][l]{\et@cqnum}#1\par\smallskip
+  \et@part{ক}{#2}{#6}\et@part{খ}{#3}{#7}\et@part{গ}{#4}{#8}\et@part{ঘ}{#5}{#9}\par\bigskip}
+\newcommand\cqpart[3]{\et@part{#1}{#2}{#3}}% free-form part (e.g. ইংরেজি/গণিত with different marks)
+
+%% Board header -------------------------------------------------------------
+\pgfkeys{/et/board/.is family,/et/board,
+  name/.store in=\eb@name, name={},
+  center/.store in=\eb@center, center={},
+  serial/.store in=\eb@serial, serial={},
+  exam/.store in=\eb@exam, exam={বহুনির্বাচনি অভীক্ষা},
+  subject/.store in=\eb@subject, subject={},
+  paper/.store in=\eb@paper, paper={প্রথম পত্র},
+  syllabus/.store in=\eb@syl, syllabus={[২০২৬ সালের সিলেবাস অনুযায়ী]},
+  time/.store in=\eb@time, time={৩০ মিনিট},
+  marks/.store in=\eb@marks, marks={৩০},
+  code/.store in=\eb@code, code={},
+  set/.store in=\eb@set, set={},
+  note/.store in=\eb@note, note={},
+  instr/.store in=\eb@instr, instr={ডান পাশের সংখ্যা প্রশ্নের পূর্ণমান জ্ঞাপক। প্রদত্ত উদ্দীপকগুলো মনোযোগ সহকারে পড় এবং সংশ্লিষ্ট প্রশ্নগুলোর যথাযথ উত্তর দাও।},
+}
+\newcommand\et@topline{\noindent\textbf{\eb@name}\hfill\textbf{\eb@center}\hfill\textbf{\eb@serial}\par}
+%  MCQ board header (box with বিষয় কোড + সেট on the right)
+\newcommand\boardmcqheader[1]{\pgfkeys{/et/board,#1}\et@topline\vspace{4pt}
+  \noindent\hspace*{0.36\linewidth}\begin{minipage}[t]{0.3\linewidth}\vspace{0pt}
+    \eb@exam\\ \eb@subject\\ \ifx\eb@paper\@empty\else\eb@paper\\\fi \eb@syl\\[2pt] সময়—\eb@time\\ পূর্ণমান—\eb@marks\end{minipage}\hfill
+  \begin{minipage}[t]{0.3\linewidth}\vspace{0pt}\fbox{\begin{minipage}{0.9\linewidth}\vspace{8pt}
+    \hfill বিষয় কোড :\ \codeboxes{\eb@code}\hfill\null\\[14pt]
+    \hspace*{2.2em}সেট :\ \codeboxes{\eb@set}\vspace{18pt}\end{minipage}}\end{minipage}\par\vspace{6pt}
+  \noindent\rule{\linewidth}{0.8pt}\par
+  {\small\noindent\hangindent=1em[\textbf{বিশেষ দ্রষ্টব্য :} সরবরাহকৃত বহুনির্বাচনি অভীক্ষার উত্তরপত্রে প্রশ্নের ক্রমিক নম্বরের বিপরীতে প্রদত্ত বর্ণসংবলিত বৃত্তসমূহ হতে সঠিক/সর্বোৎকৃষ্ট উত্তরের বৃত্তটি বল পয়েন্ট কলম দ্বারা সম্পূর্ণ ভরাট কর। প্রতিটি প্রশ্নের মান ১।]\par}
+  \smallskip\centerline{\textbf{প্রশ্নপত্রে কোনো প্রকার দাগ/চিহ্ন দেয়া যাবে না।}}\medskip}
+%  CQ board header (centered stack, code boxes, দ্রষ্টব্য, নম্বর)
+\newcommand\boardcqheader[1]{\pgfkeys{/et/board,exam={সৃজনশীল},time={২ ঘণ্টা ৩০ মিনিট},marks={৭০},#1}\et@topline
+  \begin{center}\ifx\eb@set\@empty\else\eb@set\\[3pt]\fi
+   \eb@subject\ (\eb@exam)\\ \ifx\eb@paper\@empty\else\eb@paper\\\fi \eb@syl\end{center}\vspace{-4pt}
+  \hfill বিষয় কোড :\ \codeboxes{\eb@code}\par\vspace{6pt}
+  \centerline{সময়—\eb@time}\par\vspace{2pt}\centerline{পূর্ণমান—\eb@marks}\par\vspace{6pt}
+  {\small\noindent\hangindent=4.2em\hangafter=1[\textbf{দ্রষ্টব্য :} \eb@instr\ \eb@note]\par}
+  \hfill{\small নম্বর}\par\medskip}
+%  Book / model-test header: \modeltestheader{title}{subject line}{time}{marks}{code}{instructions}
+\newcommand\modeltestheader[6]{\par\noindent
+  \makebox[0.25\linewidth][l]{}\hfill{\headfont\bfseries\Large #1}\hfill\makebox[0.25\linewidth][r]{বিষয় কোড :\ \codeboxes{#5}}\par
+  \noindent\makebox[0.25\linewidth][l]{সময় : #3}\hfill{\headfont\bfseries #2}\hfill\makebox[0.25\linewidth][r]{পূর্ণমান : #4}\par
+  {\small\noindent[\textbf{দ্রষ্টব্য :} #6]\par}\vspace{-2pt}\noindent\rule{\linewidth}{0.6pt}\par}
+\newcommand\etsep{\,\tikz[baseline=-0.55ex]{\fill (0,0) circle(0.85ex); \fill[white] (-0.28ex,-0.42ex)--(0.45ex,0)--(-0.28ex,0.42ex)--cycle;}\,}
+\newcommand\continued{\par\vfill\hfill{\small[পর পৃষ্ঠা দ্রষ্টব্য}\par}
+
+%% ---------------------------------------------------------------- practice sheet
+\newcounter{prob}
+\newtoks\et@sols
+\newif\ifet@solinline \et@solinlinefalse
+\newcommand\solutionsinline{\et@solinlinetrue}
+\newcommand\solutionsatend{\et@solinlinefalse}
+\newcommand\problabel{Problem-\twodigit{\value{prob}}}
+%  \problem{text}[source]{short answer}
+\NewDocumentCommand\problem{+m o m}{\refstepcounter{prob}\par\smallskip
+  \noindent{\latinserif\large\problabel}\,: #1\IfValueTF{#2}{\srctag{#2}}{\par}
+  \nopagebreak\noindent\textbf{উত্তর :} #3\par\medskip}
+%  \pmcq[source]{stem}{a}{b}{c}{d}{answer}  — MCQ inside a practice sheet (answer shown below)
+\NewDocumentCommand\pmcq{o +m m m m m m}{\refstepcounter{prob}\par\smallskip
+  \noindent\begin{minipage}{\linewidth}% question + options + answer never split
+  \noindent{\latinserif\large\problabel}\,: #2\IfValueTF{#1}{\srctag{#1}}{\par}
+  \begingroup\options{#3}{#4}{#5}{#6}\endgroup
+  \noindent\textbf{উত্তর :} #7\end{minipage}\par\medskip}
+%  \solution{full working} — inline or collected to the end (\printsolutions)
+\NewDocumentCommand\solution{+m}{\ifet@solinline
+   \begin{tcolorbox}[etbase,colback=etfill,colframe=etaccent,boxrule=0.4pt,arc=3pt,title={\small\headfont\bfseries সমাধান: \problabel},colbacktitle=etaccent]#1\end{tcolorbox}
+  \else\edef\et@tmp{\noexpand\et@solitem{\problabel}}%
+   \global\et@sols\expandafter{\the\expandafter\et@sols\et@tmp{#1}}\fi}
+\newcommand\printsolutions[1][সমাধান]{\par\medskip\topicbar{#1}\par
+  \def\et@solitem##1##2{\par\smallskip\noindent{\latinserif\bfseries ##1}\,:\par\nobreak ##2\par\medskip}%
+  \begin{multicols}{2}\the\et@sols\end{multicols}}
+
+%% ---------------------------------------------------------------- BUET written
+\newcounter{wq}
+%  \wq[marks]{QR-time or empty}{Bangla text [English]}{answer space}
+\NewDocumentCommand\wq{o m +m m}{\stepcounter{wq}\par
+  \noindent\begin{minipage}[t]{\dimexpr\linewidth-2.1cm}\vspace{0pt}
+   \hangindent=2.2em\hangafter=1\makebox[2.2em][l]{\latinserif\bfseries\twodigit{\value{wq}}.}#3%
+   \IfValueT{#1}{\unskip\nobreak\hfill\penalty50\hskip1em\null\nobreak\hfill[#1]}\end{minipage}\hfill
+  \begin{minipage}[t]{1.9cm}\vspace{0pt}\centering\ifstrempty{#2}{}{\ytqr{#2}}\end{minipage}\par
+  \vspace*{#4}}
+%  page frame for BUET style
+\newcommand\buetframe{\AddToHook{shipout/background}{\put(0,0){\begin{tikzpicture}[remember picture,overlay]
+   \draw[line width=0.6pt]([xshift=12mm,yshift=-12mm]current page.north west) rectangle ([xshift=-12mm,yshift=14mm]current page.south east);
+   \node[fill=etblack,text=white,minimum width=\paperwidth-28mm,minimum height=6mm,font=\latinserif\bfseries,anchor=south]
+        at ([yshift=16mm]current page.south){\et@footer};
+   \node[anchor=north east,font=\small] at ([xshift=-12mm,yshift=12mm]current page.south east){\number\value{page}};
+  \end{tikzpicture}}}}
+
+%% ---------------------------------------------------------------- page-fill helpers
+%  RULE: a page may not end with a big empty area unless the document ends there.
+%  \fillpage{<factor>}  scales line spacing of what follows (e.g. 1.18) to stretch a section to the page end
+%  \flowbreak           use instead of \newpage between parts of the SAME document (only breaks if <8% space left)
+\newcommand\fillpage[1]{\linespread{#1}\selectfont}
+\newcommand\flowbreak[1][0.1]{\par\Needspace{#1\textheight}}% new page ONLY if less than 10 % of the page is left (put before a new section / multicols)
+\endinput

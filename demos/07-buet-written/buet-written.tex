@@ -1,0 +1,40 @@
+% BUET-style written practice paper — framed pages, Bangla + [English], answer space, optional QR, watermark
+\documentclass[11pt]{article}
+\usepackage[tiro,letter]{edtech}
+\geometry{left=20mm,right=19mm,top=19mm,bottom=27mm}
+\etset{footer={BUET Written Practice · মিশ্র সেট ০১}, watermark={EduBrand}, ytid=XXXXXXXXXXX, qrsize=1.5cm}
+\buetframe
+\pagestyle{empty}
+\begin{document}
+\wq{08:40}{একটি \SI{2}{kg} ভরের বস্তু \SI{5}{m} উঁচু একটি ঘর্ষণহীন আনত তলের শীর্ষ থেকে স্থির অবস্থা থেকে নেমে এসে একটি অমসৃণ অনুভূমিক তলে ($\mu_k=0.25$) চলে থেমে যায়। অনুভূমিক তলে বস্তুটি কত দূর যাবে? [A \SI{2}{kg} block slides from rest down a frictionless incline of height \SI{5}{m} and then moves on a rough horizontal floor ($\mu_k=0.25$). How far does it travel on the floor before stopping?]
+\begin{center}\begin{tikzpicture}[scale=0.85,font=\small]
+ \fill[etfill](0,0)--(4,0)--(0,2.5)--cycle; \draw[thick](0,2.5)--(4,0)--(9,0); \draw[thick](0,0)--(0,2.5);
+ \fill[pattern=north east lines](0,0) rectangle (9,-0.15);
+ \begin{scope}[shift={(0.75,2.03)},rotate=-32]\draw[thick,fill=black!10](-0.32,0) rectangle (0.32,0.5);\end{scope}
+ \draw[{Latex}-{Latex}](-0.35,0)--(-0.35,2.5) node[midway,left]{\SI{5}{m}};
+ \draw[{Latex}-{Latex}](4,-0.5)--(9,-0.5) node[midway,below]{$d=\,?$};
+ \node at (6.5,0.35){$\mu_k=0.25$};
+ \draw[-{Latex},etblue,thick](1.4,1.9)--(2.6,1.15);
+\end{tikzpicture}\end{center}}{\stretch{1}}
+
+\wq{21:50}{$x^2+y^2-4x+6y-12=0$ বৃত্তের যে স্পর্শকগুলো $3x+4y=5$ রেখার সমান্তরাল, তাদের সমীকরণ নির্ণয় কর। [Find the equations of the tangents to the circle $x^2+y^2-4x+6y-12=0$ which are parallel to the line $3x+4y=5$.]
+\begin{center}\begin{tikzpicture}[scale=0.32,font=\scriptsize]
+ \draw[-{Latex}](-5,0)--(9,0) node[right]{$x$}; \draw[-{Latex}](0,-10)--(0,4) node[left]{$y$};
+ \draw[thick](2,-3) circle (5); \fill(2,-3) circle(3pt) node[below right]{$C(2,-3)$};
+ \draw[dashed](2,-3)--(5,1) node[midway,above left]{$r$};
+ \draw[etblue,thick,domain=-4:8.5] plot (\x,{(19-3*\x)/4});
+ \draw[etblue,thick,domain=-4.5:5] plot (\x,{(-31-3*\x)/4});
+\end{tikzpicture}\end{center}}{\stretch{1.4}}
+\newpage
+
+\wq{}{\SI{25}{\degreeCelsius} তাপমাত্রায় \SI{0.1}{M} \ce{CH3COOH} দ্রবণের pH এবং বিয়োজন মাত্রা নির্ণয় কর। [$K_a=\num{1.8e-5}$] [Calculate the pH and the degree of dissociation of a \SI{0.1}{M} acetic acid solution at \SI{25}{\degreeCelsius}. ($K_a=\num{1.8e-5}$)]}{\stretch{1}}
+
+\wq{31:05}{চিত্রের বর্তনীতে A ও B বিন্দুর মধ্যবর্তী তুল্য রোধ নির্ণয় কর। [Find the equivalent resistance between points A and B of the network shown.]
+\begin{center}\begin{circuitikz}[scale=0.8,font=\small]
+ \draw (0,0) node[circ,label=left:A]{} -- (0.6,0);
+ \draw (0.6,0) to[R,l=\SI{2}{\ohm}] (2.4,1.6) to[R,l=\SI{4}{\ohm}] (4.2,0);
+ \draw (0.6,0) to[R,l_=\SI{3}{\ohm}] (2.4,-1.6) to[R,l_=\SI{6}{\ohm}] (4.2,0);
+ \draw (2.4,1.6) to[R,l=\SI{5}{\ohm}] (2.4,-1.6);
+ \draw (4.2,0) -- (4.8,0) node[circ,label=right:B]{};
+\end{circuitikz}\end{center}}{\stretch{1.4}}
+\end{document}

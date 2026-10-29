@@ -1,0 +1,20 @@
+{
+  "_comment": "Step-2 output: what the agent extracts from transcript+slides BEFORE writing LaTeX",
+  "video_id": "XXXXXXXXXXX",
+  "chapter": "আদর্শ গ্যাস ও গ্যাসের গতিতত্ত্ব",
+  "types": [
+    {"id": "01", "title": "গ্যাসের সূত্র ও আদর্শ গ্যাস সমীকরণ", "start": "04:15", "importance": 5,
+     "concepts": [
+       {"name": "বয়েলের সূত্র", "t": "04:15", "slide": 2},
+       {"name": "চার্লসের সূত্র", "t": "09:10", "slide": 3},
+       {"name": "আদর্শ গ্যাস সমীকরণ", "t": "12:30", "slide": 4},
+       {"name": "সমন্বিত সূত্র", "t": "17:45", "note": "teacher: বোর্ডে বারবার এসেছে"}],
+     "tips": [{"t": "07:50", "text": "তাপমাত্রা সবসময় কেলভিনে — ২৭৩ যোগ করতে ভুলো না", "not_in_slides": true}],
+     "maths": [{"t": "14:05", "text": "27°C, 2 atm, 10 L → 127°C, 4 atm, V2 = ?"}]},
+    {"id": "02", "title": "গতিতত্ত্ব ও মূল গড় বর্গবেগ", "start": "21:40", "importance": 5,
+     "concepts": [{"name": "P = 1/3 ρc²", "t": "21:40"}, {"name": "c_rms", "t": "24:30"}, {"name": "স্বাধীনতার মাত্রা", "t": "31:00"}],
+     "tips": [{"t": "24:30", "text": "M অবশ্যই kg/mol এককে", "not_in_slides": true}],
+     "maths": [{"t": "27:15", "text": "27°C এ O2 এর c_rms"}]},
+    {"id": "03", "title": "আপেক্ষিক আর্দ্রতা ও শিশিরাঙ্ক", "start": "39:05", "importance": 4}
+  ]
+}
