@@ -53,7 +53,7 @@
 
 বোর্ড-স্টাইল MCQ পেপার — সেট-কোড, সময়, পূর্ণমানসহ আসল পরীক্ষার ফরম্যাট, শেষে উত্তরমালা ও ব্যাখ্যা।
 
-<img src="demos/01-board-mcq/board-mcq-preview-1.png" width="49%"> <img src="demos/01-board-mcq/board-mcq-preview-2.png" width="49%">
+<img src="demos/01-board-mcq/board-mcq-preview-1.svg" width="49%"> <img src="demos/01-board-mcq/board-mcq-preview-2.png" width="49%">
 
 📄 [PDF](demos/01-board-mcq/board-mcq.pdf) · 💻 [সোর্স .tex](demos/01-board-mcq/board-mcq.tex)
 
