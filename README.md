@@ -39,7 +39,7 @@
 | **Claude Code / Claude (Skills সাপোর্ট)** | পুরো ফোল্ডারটা `~/.claude/skills/bangla-edtech-studio/` তে রাখুন। এরপর শুধু বলুন — *"HSC ফিজিক্স ভেক্টরের ২৫টা MCQ বোর্ড প্রশ্ন বানাও"* |
 | **Codex / Cursor / অন্য কোডিং এজেন্ট** | ফোল্ডারটা প্রজেক্টে রাখুন, প্রথম মেসেজে বলুন: *"`SKILL.md` পড়ে সেই অনুযায়ী কাজ করো"* |
 | **ChatGPT / Gemini (ফাইল আপলোড)** | `EDTECH_SKILL_ALL_IN_ONE.md` আপলোড করুন — সব নির্দেশনা + টেমপ্লেট একটাই ফাইলে। কোড চালানোর সুবিধা থাকলে PDF পর্যন্ত বানাবে, না থাকলে `.tex` দেবে — Overleaf-এ (Compiler: **XeLaTeX**) চালালেই PDF |
-| **Muse / Grok / Bolt / OpenAI ও অন্যান্য AI এজেন্ট** | ফোল্ডারটা প্রজেক্টে রাখুন অথবা `EDTECH_SKILL_ALL_IN_ONE.md` আপলোড করুন, তারপর বলুন: *"`SKILL.md` পড়ে সেই অনুযায়ী কাজ করো"* — কোড চালানোর সুবিধা থাকলে PDF/ভিডিও পর্যন্ত বানাবে, না থাকলে `.tex` ও নির্দেশনা দেবে |
+| **Muse / Grok / Bolt / OpenAI ও অন্যান্য AI এজেন্ট** | ফোল্ডারটা প্রজেক্টে রাখুন অথবা `EDTECH_SKILL_ALL_IN_ONE.md` আপলোড করুন, তারপর বলুন: *"`SKILL.md` পড়ে সেই অনুযায়ী কাজ করো"* — কোড চালানোর সুবিধা থাকলে PDF/ভিডিও পর্যন্ত বানাবে, না থাকলে `.tex` ও নির্দেশনা দেবে। **সবচেয়ে সহজ: শুধু এই repo-র link-টা বটকে পাঠালেই সে নিজে নিজে skill-টা install করে নেবে — `github.com/x0xnothing/OPE-one-person-edtech`** |
 
 প্রথমবার নিজের কম্পিউটারে: `bash scripts/setup.sh` · Windows হলে `references/setup.md` দেখুন।
 
